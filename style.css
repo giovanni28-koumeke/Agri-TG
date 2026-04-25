@@ -566,6 +566,17 @@ body.light-mode .solution-card {
     color: var(--text-primary);
 }
 
+body.light-mode .table-item {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-secondary);
+}
+
+body.light-mode .table-header {
+    background-color: #e2e8f0;
+    color: var(--text-primary);
+}
+
 body.light-mode .form-group input,
 body.light-mode .block-hash {
     background-color: #f1f5f9;
