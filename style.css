@@ -1,0 +1,644 @@
+/* --- PALETTE DE COULEURS --- */
+:root {
+    /* Couleurs structurelles sémantiques */
+    --bg-primary: #070B09;
+    --bg-card: #111513;
+
+    /* Textes et Bordures */
+    --text-primary: #E2E8F0;
+    --text-secondary: #94A3B8;
+    --border-color: #1F2922;
+
+    /* Couleurs de marque */
+    --primary-green: #10B981;
+    /* Typographies */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* --- THEME LIGHT MODE --- */
+[data-theme="light"] {
+    --bg-primary: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --border-color: #E2E8F0;
+}
+
+/* Réinitialisation de base */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+}
+
+/* Utilitaires globaux d'accessibilité (Lecteurs d'écran) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* --- 1. EN-TÊTE / NAVIGATION --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navbar ul {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.navbar a {
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: var(--primary-green);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.logo span {
+    color: var(--primary-green);
+}
+
+
+/* --- 2. BOUTONS --- */
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Bouton d'action principal */
+.btn-primary {
+    background-color: var(--primary-green);
+    color: #070B09;
+    border: 1px solid var(--primary-green);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.btn-primary.loading {
+    opacity: 0.7;
+    cursor: wait;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(0.98); opacity: 0.5; box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+}
+
+/* Bouton d'action secondaire */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-secondary);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-primary);
+}
+
+/* --- 3. SECTION ACCUEIL (HERO) --- */
+.hero-content {
+    text-align: left;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    max-width: 850px;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+}
+
+/* -- TEXTE MULTICOLORE -- */
+.text-green {
+    color: var(--primary-green) !important;
+}
+
+.text-blue {
+    color: #3B82F6 !important;
+}
+
+section {
+    padding: 6rem 0;
+}
+
+
+
+h1,
+h2,
+h3,
+.logo {
+    font-family: var(--font-heading);
+}
+
+/* --- SECTION PROBLÈME --- */
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-secondary);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem;
+}
+
+.section-heading h2 {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.section-heading .subtitle {
+    font-size: 1.1rem;
+}
+
+/* 1. La grille responsive */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* 2. Le style de la carte */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* 3. La statistique au centre */
+.card-stat {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin: 1rem 0;
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* --- SECTION HISTOIRES --- */
+
+/* Utilitaires d'alignement */
+.text-left,
+.story-card {
+    text-align: left !important;
+}
+
+.avatar {
+    background-color: #1E293B;
+    color: var(--text-primary);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.story-card p:last-child {
+    margin-top: 2rem;
+    color: var(--text-primary);
+}
+
+.story-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+/* --- SECTION SOLUTION --- */
+
+.solution-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.mockup-container {
+    background-color: #1E293B;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    display: block;
+}
+
+.mockup-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.highlight-card {
+    border: 1px solid var(--primary-green) !important;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);
+}
+
+/* --- 4. SECTION COMPARAISON (AVANT/APRÈS) --- */
+.comparison-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #111827;
+    border-radius: 12px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.comparison-container h2 {
+    margin-bottom: 3rem;
+}
+
+.table-row {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-col {
+    flex: 1;
+    padding: 1.5rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+}
+
+.table-header .table-col {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* --- 5. SECTION DÉMO BLOCKCHAIN --- */
+#blockchain-demo {
+    background: radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+}
+
+.demo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+.demo-form {
+    flex: 1;
+}
+
+.demo-form h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.demo-form p {
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1.2rem;
+    background-color: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    background-color: #0f172a;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.demo-ledger {
+    flex: 1;
+}
+
+#ledger-list {
+    list-style: none;
+    padding: 0;
+}
+
+.block-card {
+    background-color: rgba(30, 41, 59, 0.5);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-green);
+}
+
+.block-id {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.block-hash {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.block-hash span {
+    color: var(--primary-green);
+}
+
+.block-data {
+    color: var(--text-primary);
+    margin: 0;
+    font-weight: 500;
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.block-id {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+}
+
+/* --- 6. LE PIED DE PAGE (FOOTER) --- */
+.site-footer {
+    background-color: #050505;
+    padding: 6rem 2rem 2rem 2rem;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+}
+
+.footer-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+.footer-content p {
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-bottom p {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn-theme {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-theme:hover {
+    transform: scale(1.2) rotate(15deg);
+}
+
+/* ==============================================================
+   7. LE SYSTÈME DE THÈME (LIGHT MODE)
+============================================================== */
+body.light-mode {
+    --bg-primary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --bg-card: #ffffff;
+}
+
+body.light-mode .comparison-container,
+body.light-mode .block-card,
+body.light-mode .avatar,
+body.light-mode .solution-card {
+    background-color: #f1f5f9;
+    border-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+}
+
+body.light-mode .form-group input,
+body.light-mode .block-hash {
+    background-color: #f1f5f9;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+}
+
+body.light-mode .site-footer {
+    background-color: #e2e8f0;
+}
+
+body.light-mode .footer-bottom {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .footer-bottom p {
+    color: var(--text-secondary);
+}
+
+body.light-mode .btn-secondary {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+}
+
+/* ==============================================================
+   8. ANIMATIONS AU DÉFILEMENT
+============================================================== */
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-in-element.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==============================================================
+   9. RESPONSIVE DESIGN (MOBILES ET TABLETTES)
+============================================================== */
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .demo-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .comparison-container {
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .table-row {
+        flex-direction: column;
+    }
+
+    .table-col {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}
