@@ -600,15 +600,26 @@ body.light-mode .btn-secondary {
 ============================================================== */
 @media screen and (max-width: 768px) {
     .navbar {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
         padding: 1rem;
         gap: 1rem;
+    }
+
+    .navbar nav {
+        grid-column: 1 / -1;
+        margin-top: 0.5rem;
     }
 
     .navbar ul {
         flex-wrap: wrap;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 1rem;
+    }
+
+    .btn-theme {
+        margin-right: 0;
     }
 
     .hero-content h1 {
@@ -634,11 +645,11 @@ body.light-mode .btn-secondary {
     }
 
     .table-row {
-        flex-direction: column;
+        flex-direction: row;
+        min-width: 600px;
     }
 
     .table-col {
         padding: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 }
