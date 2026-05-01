@@ -5,83 +5,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard Phase 2 - Agri TG">
-    <title>Dashboard Phase 2 - Agri TG</title>
+    <title>Dashboard Phase 2 - Agri TG</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="../assets/logoAgriTG.jpeg">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@500;700;800&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
 </head>
 
-<body>
-    <header>
-        <a href="../index.html">Agri TG</a>
+<body class="phase2-page">
+    <header class="navbar navbar-alt">
+        <a href="../index.html" class="logo">Agri <span>TG</span></a>
         <nav>
-            <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#transactions">Transactions</a></li>
-                <li><a href="#votes">Votes</a></li>
-            </ul>
+            <a href="#dashboard" class="nav-link">Dashboard</a>
+            <a href="#transactions" class="nav-link">Transactions</a>
+            <a href="#votes" class="nav-link">Votes</a>
         </nav>
-        <button id="logout-btn">Déconnexion</button>
+        <button id="logout-btn" class="btn-secondary">Déconnexion</button>
     </header>
 
-    <main id="dashboard">
-        <!-- Zone Solde -->
-        <section id="balance-zone" class="dashboard-section">
-            <h2>Solde du Compte</h2>
-            <div class="balance-card">
-                <div class="balance-info">
-                    <p class="balance-label">Solde Total</p>
-                    <p class="bala>
-            <h2>Solde du Compte</h2>
-            <div>
-                <p>Solde Total</p>
-                <p>0 CFA</p>
+    <main class="page-shell">
+        <section id="dashboard" class="section-block">
+            <div class="section-header">
+                <h1>Tableau de bord Phase 2</h1>
+                <p>Suivez le solde, l’activité financière et les décisions collectives directement depuis votre espace membre.</p>
+            </div>
+
+            <div class="summary-grid">
+                <article class="stat-card">
+                    <span class="stat-label">Solde total</span>
+                    <strong id="balance-value">0 FCFA</strong>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Transactions</span>
+                    <strong id="transaction-count">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Propositions</span>
+                    <strong id="proposal-count">0</strong>
+                </article>
             </div>
         </section>
 
-        <!-- Tableau des Transactions -->
-        <section id="transactions">
-            <h2>Transactions Récentes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>Montant</th>
-                        <th>Statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="5">Aucune transaction pour le moment</td>
-                    </tr>
-                </tbody>
-            </table>
+        <section id="transactions" class="section-block">
+            <div class="section-header">
+                <h2>Transactions récentes</h2>
+                <p>Chaque mouvement financier est tracé pour garantir la transparence de la coopérative.</p>
+            </div>
+
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-table-body">
+                        <tr>
+                            <td colspan="5">Aucune transaction pour le moment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <!-- Section Vote -->
-        <section id="votes">
-            <h2>Votes et Décisions</h2>
-            <div>
-                <div>
-                    <h3>Vote Title</h3>
-                    <p>Description du vote ou de la décision</p>
-                    <div>
-                        <button>Option 1</button>
-                        <button>Option 2</button>
+        <section id="votes" class="section-block">
+            <div class="section-header">
+                <h2>Votes et décisions</h2>
+                <p>Participez aux votes, suivez les résultats et gardez la gouvernance coopérative visible.</p>
+            </div>
+
+            <div id="proposal-list" class="vote-grid">
+                <article class="vote-card">
+                    <div class="vote-header">
+                        <div>
+                            <h3>Proposition de financement</h3>
+                            <p>Valider l’achat de tracteurs pour accélérer les récoltes.</p>
+                        </div>
+                        <span class="badge">Ouvert</span>
                     </div>
-                    <p
-    <footer>
-        <p>&copy; 2026 Agri TG. Tous droits réservés.</p>
+
+                    <div class="vote-stats">
+                        <span><strong>34</strong> Oui</span>
+                        <span><strong>6</strong> Non</span>
+                        <span><strong>2</strong> Abstention</span>
+                    </div>
+
+                    <div class="progress-wrap">
+                        <div class="progress-bar" style="width: 74%;"></div>
+                    </div>
+
+                    <div class="vote-actions">
+                        <button class="btn-secondary">Voter Oui</button>
+                        <button class="btn-secondary">Voter Non</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer simple-footer">
+        <p>© 2026 Agri TG. Tous droits réservés.</p>
     </footer>
 
     <script src="../script.js"></script>
