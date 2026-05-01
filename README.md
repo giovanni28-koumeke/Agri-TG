@@ -31,6 +31,8 @@ Agri TG est monté sur une infrastructure ultra-légère (Pur Vanilla). Il n'y a
 > - `dashboard.jpeg`
 > - `votes.jpeg`
 > - `historique.jpeg`
+>
+> **Organisation du projet :** les documents de planification sont maintenant dans `docs/` et les pages fonctionnelles Phase 2 seront rassemblées dans `pages/`.
 
 ## ✅ Rappel des correctifs récents
 - Résolution des problèmes d'affichage mobile.
