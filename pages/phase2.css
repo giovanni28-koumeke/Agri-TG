@@ -1,0 +1,76 @@
+/* --- 1. CHARTE VISUELLE ET VARIABLES (Mobile-First) --- */
+:root {
+    --primary: #27ae60;
+    --secondary: #2c3e50;
+    --bg-light: #f8f9fa;
+    --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
+
+/* --- 2. LAYOUT DU DASHBOARD --- */
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Une seule colonne par défaut (Mobile) */
+    gap: 15px;
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    .summary-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 colonnes sur Tablette/PC */
+    }
+}
+
+/* --- 3. COMPOSANTS DE VOTE (Ergonomie) --- */
+.vote-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+}
+
+.vote-actions {
+    display: flex;
+    flex-direction: column; /* Boutons l'un sur l'autre sur mobile */
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.vote-actions button {
+    padding: 15px; /* Gros boutons pour le pouce (tactile) */
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+@media (min-width: 480px) {
+    .vote-actions {
+        flex-direction: row; /* Côte à côte si l'écran est assez large */
+    }
+}
+
+/* --- 4. TABLEAU DE TRANSACTIONS RESPONSIVE --- */
+@media (max-width: 600px) {
+    #transaction-table-body tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        padding: 10px;
+        background: #fff;
+    }
+    
+    #transaction-table-body td {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding: 8px 0;
+    }
+    
+    #transaction-table-body td:last-child { border-bottom: none; }
+    
+    /* Masquer l'en-tête du tableau sur mobile */
+    table thead { display: none; }
+}
