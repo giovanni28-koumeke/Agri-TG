@@ -69,4 +69,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- DEMO MOBILE (SIMULATEUR) ---
+    const btnDemoMobile = document.getElementById('btn-demo-mobile');
+    const mobileModal = document.getElementById('mobile-demo-modal');
+    const closeMobileBtn = document.getElementById('close-mobile-demo');
+    
+    if (btnDemoMobile && mobileModal) {
+        btnDemoMobile.addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileModal.style.display = 'flex';
+        });
+        
+        closeMobileBtn.addEventListener('click', () => {
+            mobileModal.style.display = 'none';
+        });
+        
+        // Fermer en cliquant à côté
+        mobileModal.addEventListener('click', (e) => {
+            if(e.target === mobileModal) {
+                mobileModal.style.display = 'none';
+            }
+        });
+    }
+
 });

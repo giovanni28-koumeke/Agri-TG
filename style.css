@@ -629,8 +629,15 @@ body.light-mode .btn-secondary {
     }
 
     .btn-theme {
-        margin-right: 0;
+        margin-right: 10px;
         margin-left: auto;
+    }
+
+    .navbar .btn-primary {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        display: inline-block !important;
+        white-space: nowrap;
     }
 
     .navbar nav {

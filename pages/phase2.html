@@ -13,6 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <!-- On n'utilise pas style.css ici pour éviter les conflits de thème sombre, tout est dans phase2.css -->
     <link rel="stylesheet" href="./phase2.css">
+    
+    <!-- Configuration PWA (Progressive Web App) -->
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#22c55e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Agri TG">
 </head>
 
 <body class="app-body">
@@ -54,7 +61,7 @@
                 <nav class="sidebar-nav">
                     <a href="#" class="nav-item outline" id="btn-new-tx">Nouvelle transaction</a>
                     <a href="#" class="nav-item outline">Nouvelle proposition</a>
-                    <a href="#" class="nav-item outline">Inviter un membre</a>
+                    <a href="#" class="nav-item outline" style="background: var(--green-light); color: var(--green-dark); border-color: var(--green-primary);" id="btn-demo-mobile">📱 Démo App Mobile</a>
                 </nav>
             </div>
 
@@ -285,6 +292,15 @@
             <span>Profil</span>
         </a>
     </nav>
+
+    <!-- Modale de Démonstration Mobile -->
+    <div id="mobile-demo-modal" class="modal-overlay" style="display: none;">
+        <div class="mobile-frame">
+            <button id="close-mobile-demo" class="btn-close-modal">✖ Fermer</button>
+            <div class="phone-notch"></div>
+            <iframe src="phase2.html" class="phone-iframe" title="Application Mobile"></iframe>
+        </div>
+    </div>
 
     <!-- Script de la phase 2 -->
     <script src="./phase2.js"></script>
