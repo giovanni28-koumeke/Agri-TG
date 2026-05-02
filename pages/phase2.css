@@ -80,20 +80,25 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     font-weight: 600;
 }
 
-.sidebar-nav { display: flex; flex-direction: column; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 10px; padding: 0 15px; }
 .nav-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 20px;
+    padding: 10px 15px;
     color: var(--text-muted);
     font-weight: 500;
     transition: all 0.2s;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
 }
 
 .nav-item.active {
     background-color: var(--green-primary);
     color: white;
+    border-color: var(--green-primary);
 }
 
 .nav-item:hover:not(.active) {
@@ -103,14 +108,11 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 
 .nav-item.outline {
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    margin: 5px 20px;
-    padding: 10px 15px;
     justify-content: center;
     color: var(--text-main);
 }
 
-.sidebar-footer { margin-top: auto; }
+.sidebar-footer { margin-top: auto; padding: 0 15px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;}
 .text-red { color: var(--red-main) !important; }
 
 /* ================= MAIN CONTENT ================= */
@@ -124,7 +126,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 /* HEADER */
 .app-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 15px 30px;
     background: var(--bg-sidebar);
@@ -140,13 +142,15 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background: var(--bg-app);
     border: 1px solid var(--border-light);
     border-radius: 20px;
-    padding: 8px 15px;
-    width: 300px;
+    padding: 10px 20px;
+    width: 400px;
+    margin-right: auto;
+    margin-left: auto;
 }
-.search-bar input { border: none; background: transparent; outline: none; margin-left: 10px; width: 100%; }
+.search-bar input { border: none; background: transparent; outline: none; margin-left: 10px; width: 100%; font-size: 0.9rem;}
 
 .header-actions { display: flex; align-items: center; gap: 20px; }
-.icon-btn { font-size: 1.2rem; position: relative; }
+.icon-btn { font-size: 1.5rem; position: relative; }
 .notification-dot {
     position: absolute; top: -2px; right: -2px; width: 8px; height: 8px;
     background: var(--red-main); border-radius: 50%;
@@ -172,12 +176,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .stat-box {
     background: var(--bg-panel); border: 1px solid var(--border-light); border-radius: var(--radius-lg);
-    padding: 15px; display: flex; align-items: center; gap: 15px;
+    padding: 20px; display: flex; align-items: center; justify-content: center; gap: 15px;
+    box-shadow: var(--shadow-sm);
 }
 .border-green { border: 2px solid var(--green-primary); }
-.stat-icon { font-size: 1.5rem; }
+.stat-icon { font-size: 2rem; }
+.stat-info { text-align: center; }
 .stat-info h4 { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-.stat-info strong { display: block; font-size: 1.2rem; margin: 2px 0; }
+.stat-info strong { display: block; font-size: 1.4rem; margin: 4px 0; }
 .stat-sub { font-size: 0.75rem; color: var(--text-muted); }
 .text-green { color: var(--green-primary) !important; }
 
