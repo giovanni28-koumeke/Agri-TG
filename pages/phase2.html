@@ -5,115 +5,284 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard Phase 2 - Agri TG">
-    <title>Dashboard Phase 2 - Agri TG</title>
+    <title>Dashboard Phase 2 - Agri TG</title>
 
     <link rel="icon" type="image/jpeg" href="../assets/logoAgriTG.jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- On n'utilise pas style.css ici pour éviter les conflits de thème sombre, tout est dans phase2.css -->
+    <link rel="stylesheet" href="./phase2.css">
 </head>
 
-<body class="phase2-page">
-    <header class="navbar navbar-alt">
-        <a href="../index.html" class="logo">Agri <span>TG</span></a>
-        <nav>
-            <a href="#dashboard" class="nav-link">Dashboard</a>
-            <a href="#transactions" class="nav-link">Transactions</a>
-            <a href="#votes" class="nav-link">Votes</a>
-        </nav>
-        <button id="logout-btn" class="btn-secondary">Déconnexion</button>
-    </header>
+<body class="app-body">
+    <div class="app-container">
 
-    <main class="page-shell">
-        <section id="dashboard" class="section-block">
-            <div class="section-header">
-                <h1>Tableau de bord Phase 2</h1>
-                <p>Suivez le solde, l’activité financière et les décisions collectives directement depuis votre espace membre.</p>
+        <!-- ================= SIDEBAR (DESKTOP) ================= -->
+        <aside class="app-sidebar">
+            <div class="sidebar-logo">
+                <img src="../assets/logoAgriTG.jpeg" alt="Logo" class="logo-img">
+                <span class="logo-text">Agri-TG</span>
             </div>
 
-            <div class="summary-grid">
-                <article class="stat-card">
-                    <span class="stat-label">Solde total</span>
-                    <strong id="balance-value">0 FCFA</strong>
-                </article>
-                <article class="stat-card">
-                    <span class="stat-label">Transactions</span>
-                    <strong id="transaction-count">0</strong>
-                </article>
-                <article class="stat-card">
-                    <span class="stat-label">Propositions</span>
-                    <strong id="proposal-count">0</strong>
-                </article>
-            </div>
-        </section>
-
-        <section id="transactions" class="section-block">
-            <div class="section-header">
-                <h2>Transactions récentes</h2>
-                <p>Chaque mouvement financier est tracé pour garantir la transparence de la coopérative.</p>
-            </div>
-
-            <div class="table-card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Montant</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transaction-table-body">
-                        <tr>
-                            <td colspan="5">Aucune transaction pour le moment</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="votes" class="section-block">
-            <div class="section-header">
-                <h2>Votes et décisions</h2>
-                <p>Participez aux votes, suivez les résultats et gardez la gouvernance coopérative visible.</p>
+            <div class="sidebar-section">
+                <p class="sidebar-title">MENU</p>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active">
+                        <span class="icon">🏠</span> Tableau de bord
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">💸</span> Transaction
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">🗳️</span> Vote
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">👥</span> Membres
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">📊</span> Rapport
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="icon">⚙️</span> Paramètre
+                    </a>
+                </nav>
             </div>
 
-            <div id="proposal-list" class="vote-grid">
-                <article class="vote-card">
-                    <div class="vote-header">
-                        <div>
-                            <h3>Proposition de financement</h3>
-                            <p>Valider l’achat de tracteurs pour accélérer les récoltes.</p>
+            <div class="sidebar-section">
+                <p class="sidebar-title">Raccourcis</p>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item outline" id="btn-new-tx">Nouvelle transaction</a>
+                    <a href="#" class="nav-item outline">Nouvelle proposition</a>
+                    <a href="#" class="nav-item outline">Inviter un membre</a>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item">
+                    <span class="icon">⚙️</span> Paramètre
+                </a>
+                <a href="../index.html" class="nav-item text-red">
+                    <span class="icon">🚪</span> Déconnection
+                </a>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="app-main">
+            <!-- HEADER -->
+            <header class="app-header">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Rechercher">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn">🔔<span class="notification-dot"></span></button>
+                    <div class="user-profile">
+                        <div class="avatar-circle">KE</div>
+                        <span class="user-name">KODJO Elie</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT GRID -->
+            <div class="app-content">
+                
+                <!-- TOP STATS -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h4>Membre actif</h4>
+                            <strong>24</strong>
+                            <span class="stat-sub text-green">+3 nouveau</span>
                         </div>
-                        <span class="badge">Ouvert</span>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">💸</div>
+                        <div class="stat-info">
+                            <h4>Transaction</h4>
+                            <strong>167</strong>
+                            <span class="stat-sub">+12 cette semaine</span>
+                        </div>
+                    </div>
+                    <div class="stat-box border-green">
+                        <div class="stat-icon text-green">✅</div>
+                        <div class="stat-info">
+                            <h4>Certifier</h4>
+                            <strong>185</strong>
+                            <span class="stat-sub">95.9% validé</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">🗳️</div>
+                        <div class="stat-info">
+                            <h4>Vote Actif</h4>
+                            <strong>20</strong>
+                            <span class="stat-sub">Participation de 87%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE ROW : CHARTS -->
+                <div class="charts-row">
+                    <!-- Balance Chart -->
+                    <div class="balance-card panel">
+                        <div class="balance-info">
+                            <h3>solde coopérative</h3>
+                            <h2>2,450,000 CFA</h2>
+                            <p>solde disponible</p>
+                            <button class="btn-primary mt-auto">voir le rapport financier</button>
+                        </div>
+                        <div class="balance-chart-area">
+                            <div class="chart-header">
+                                <span>Évolution du solde</span>
+                                <select><option>Année en cours</option></select>
+                            </div>
+                            <div class="fake-line-chart">
+                                <!-- Ligne SVG simulée -->
+                                <svg viewBox="0 0 400 150" class="chart-svg">
+                                    <polyline fill="none" stroke="#22c55e" stroke-width="3" points="0,140 50,110 100,120 150,90 200,70 250,50 300,30 350,20 400,10"/>
+                                    <circle cx="0" cy="140" r="4" fill="#22c55e"/>
+                                    <circle cx="50" cy="110" r="4" fill="#22c55e"/>
+                                    <circle cx="100" cy="120" r="4" fill="#eab308"/> <!-- point orange/jaune -->
+                                    <circle cx="150" cy="90" r="4" fill="#22c55e"/>
+                                    <circle cx="400" cy="10" r="4" fill="#22c55e"/>
+                                </svg>
+                                <!-- Grille de fond -->
+                                <div class="chart-grid">
+                                    <span>10M</span><span>8M</span><span>6M</span><span>4M</span><span>2M</span><span>0</span>
+                                </div>
+                                <div class="chart-labels">
+                                    <span>Jan</span><span>Fév</span><span>Mars</span><span>Avr</span><span>Mai</span><span>Juin</span><span>Juil</span><span>Août</span><span>Sept</span><span>Oct</span><span>Nov</span><span>Déc</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="vote-stats">
-                        <span><strong>34</strong> Oui</span>
-                        <span><strong>6</strong> Non</span>
-                        <span><strong>2</strong> Abstention</span>
+                    <!-- Expenses Donut -->
+                    <div class="expenses-card panel">
+                        <h3>Analyse des dépenses</h3>
+                        <div class="donut-container">
+                            <div class="donut-chart">
+                                <!-- Donut fait en CSS conic-gradient -->
+                            </div>
+                            <div class="donut-legend">
+                                <div class="legend-item"><span class="dot green"></span> Achat d'intrant (45%)</div>
+                                <div class="legend-item"><span class="dot dark"></span> Maintenance Matériel (30%)</div>
+                                <div class="legend-item"><span class="dot orange"></span> Primes membres (15%)</div>
+                                <div class="legend-item"><span class="dot gray"></span> Frais Opérationnel (10%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM ROW : TRANSACTIONS & VOTES -->
+                <div class="bottom-row">
+                    <!-- Transactions List -->
+                    <div class="transactions-card panel">
+                        <div class="panel-header">
+                            <h3>Historique des transaction</h3>
+                            <div class="filter-tabs">
+                                <button class="active">Tout</button>
+                                <button>Entrer</button>
+                                <button>Sortie</button>
+                            </div>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="tx-item">
+                                <div class="tx-user"><div class="avatar-sm img-1"></div> AMAVI Jojo</div>
+                                <div class="tx-desc">Cotisation mensuel</div>
+                                <div class="tx-amount text-green">+500.000 CFA</div>
+                                <div class="tx-time">il y a 3 jours</div>
+                            </div>
+                            <div class="tx-item">
+                                <div class="tx-user"><div class="avatar-sm img-2"></div> KOMI Hervé</div>
+                                <div class="tx-desc">Achat d'engrais</div>
+                                <div class="tx-amount text-red">-70.000 CFA</div>
+                                <div class="tx-time">il y a 5 jours</div>
+                            </div>
+                            <div class="tx-item">
+                                <div class="tx-user"><div class="avatar-sm img-3"></div> KOMA Ablavi</div>
+                                <div class="tx-desc">Prime de vente</div>
+                                <div class="tx-amount text-green">+250.000 CFA</div>
+                                <div class="tx-time">il y a 2 jours</div>
+                            </div>
+                            <div class="tx-item">
+                                <div class="tx-user"><div class="avatar-sm img-4"></div> KASSA Junior</div>
+                                <div class="tx-desc">Cotisation mensuel</div>
+                                <div class="tx-amount text-green">+300.000 CFA</div>
+                                <div class="tx-time">il y a 7 jours</div>
+                            </div>
+                            <div class="tx-item">
+                                <div class="tx-user"><div class="avatar-sm img-5"></div> SASSOU Komi</div>
+                                <div class="tx-desc">Cotisation mensuel</div>
+                                <div class="tx-amount text-green">+100.000 CFA</div>
+                                <div class="tx-time">il y a 2 jours</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="progress-wrap">
-                        <div class="progress-bar" style="width: 74%;"></div>
+                    <!-- Active Vote -->
+                    <div class="vote-card-panel panel">
+                        <h3>Proposition en cours</h3>
+                        <div class="vote-inner-card">
+                            <div class="vote-content">
+                                <h4>Proposition de dépense</h4>
+                                <p>Acceptez-vous le projet d'achat d'un nouveau tracteur pour 600.000 CFA pour la coopérative ?</p>
+                                <div class="vote-meta">
+                                    <span>👥 22 Membres connecter</span>
+                                </div>
+                            </div>
+                            <div class="vote-image">
+                                <!-- Image placeholder tracteur -->
+                                <img src="../assets/dashboard.jpeg" alt="Tracteur" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div class="vote-progress-section">
+                            <p class="text-center text-sm mb-1">Participants</p>
+                            <div class="vote-progress-bar">
+                                <div class="bar-green" style="width: 75%;"></div>
+                            </div>
+                            <div class="vote-buttons-row">
+                                <div class="vote-btn-group">
+                                    <span class="vote-label">Oui<br><small>15 votes<br>il y a 2 jours</small></span>
+                                    <button class="btn-vote btn-yes" id="btn-vote-yes">Oui</button>
+                                </div>
+                                <div class="vote-btn-group">
+                                    <span class="vote-label">Non<br><small>5 votes<br>il y a 2 jours</small></span>
+                                    <button class="btn-vote btn-no">Non</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="vote-actions">
-                        <button class="btn-secondary">Voter Oui</button>
-                        <button class="btn-secondary">Voter Non</button>
-                    </div>
-                </article>
             </div>
-        </section>
-    </main>
+        </main>
+    </div>
 
-    <footer class="site-footer simple-footer">
-        <p>© 2026 Agri TG. Tous droits réservés.</p>
-    </footer>
+    <!-- ================= BOTTOM NAVIGATION (MOBILE ONLY) ================= -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span class="icon">🏠</span>
+            <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">💸</span>
+            <span>Transact.</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">🗳️</span>
+            <span>Votes</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">👥</span>
+            <span>Profil</span>
+        </a>
+    </nav>
 
-    <script src="../script.js"></script>
+    <!-- Script de la phase 2 -->
+    <script src="./phase2.js"></script>
 </body>
-
 </html>

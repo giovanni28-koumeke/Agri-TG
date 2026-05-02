@@ -56,6 +56,21 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+            
+            // Animation UX (Optionnelle)
+            const btn = this.querySelector('button[type="submit"]');
+            btn.textContent = "Connexion...";
+            btn.disabled = true;
+            
+            // Redirection vers le dashboard après 1 petite seconde
+            setTimeout(() => {
+                window.location.href = 'phase2.html';
+            }, 800);
+        });
+    </script>
 </body>
 
 </html>

@@ -18,54 +18,56 @@ function generateFakeHash() {
 }
 
 // --- 3. LOGIQUE PRINCIPALE : CERTIFICATION ---
-btnCertify.addEventListener('click', function () {
-    const memberName = memberInput.value;
-    const amount = amountInput.value;
+if (btnCertify) {
+    btnCertify.addEventListener('click', function () {
+        const memberName = memberInput.value;
+        const amount = amountInput.value;
 
-    if (memberName === '' || amount === '') {
-        alert("Veuillez remplir le nom et le montant !");
-        return;
-    }
+        if (memberName === '' || amount === '') {
+            alert("Veuillez remplir le nom et le montant !");
+            return;
+        }
 
-    // Début de l'état de chargement (Animation UX)
-    const originalText = btnCertify.textContent;
-    btnCertify.textContent = "⏳ Validation par les nœuds...";
-    btnCertify.disabled = true;
-    btnCertify.classList.add('loading');
+        // Début de l'état de chargement (Animation UX)
+        const originalText = btnCertify.textContent;
+        btnCertify.textContent = "⏳ Validation par les nœuds...";
+        btnCertify.disabled = true;
+        btnCertify.classList.add('loading');
 
-    // On simule le délai réseau / minage d'un vrai Block
-    setTimeout(() => {
-        const blockHash = generateFakeHash();
+        // On simule le délai réseau / minage d'un vrai Block
+        setTimeout(() => {
+            const blockHash = generateFakeHash();
 
-        // Le nouveau bloc a déjà la classe 'visible' pour ne pas nécessiter le scroll public
-        const newBlockHTML = `
-            <li class="block-card fade-in-element visible">
-                <div class="block-header">
-                    <span class="block-id">Bloc ${blockCount} (Validé on-chain)</span>
-                    <span class="text-green">✓ Certifié</span>
-                </div>
-                
-                <div class="block-hash">
-                    Hash: <span>${blockHash}</span>
-                </div>
-                <p class="block-data">Participant: <strong>${memberName}</strong></p>
-                <p class="block-data">Ajout de: <strong>${amount} FCFA</strong></p>
-            </li>
-        `;
+            // Le nouveau bloc a déjà la classe 'visible' pour ne pas nécessiter le scroll public
+            const newBlockHTML = `
+                <li class="block-card fade-in-element visible">
+                    <div class="block-header">
+                        <span class="block-id">Bloc ${blockCount} (Validé on-chain)</span>
+                        <span class="text-green">✓ Certifié</span>
+                    </div>
+                    
+                    <div class="block-hash">
+                        Hash: <span>${blockHash}</span>
+                    </div>
+                    <p class="block-data">Participant: <strong>${memberName}</strong></p>
+                    <p class="block-data">Ajout de: <strong>${amount} FCFA</strong></p>
+                </li>
+            `;
 
-        ledgerList.insertAdjacentHTML('afterbegin', newBlockHTML);
+            ledgerList.insertAdjacentHTML('afterbegin', newBlockHTML);
 
-        blockCount++;
-        memberInput.value = '';
-        amountInput.value = '';
+            blockCount++;
+            memberInput.value = '';
+            amountInput.value = '';
 
-        // Fin de l'état de chargement
-        btnCertify.textContent = originalText;
-        btnCertify.disabled = false;
-        btnCertify.classList.remove('loading');
+            // Fin de l'état de chargement
+            btnCertify.textContent = originalText;
+            btnCertify.disabled = false;
+            btnCertify.classList.remove('loading');
 
-    }, 2000); // 2 secondes de délai (Proof of Work)
-});
+        }, 2000); // 2 secondes de délai (Proof of Work)
+    });
+}
 
 // =========================================================
 // 4. SYSTÈME DE THÈME (LIGHT/DARK MODE)
@@ -81,17 +83,19 @@ if (currentTheme === 'light') {
 }
 
 // Bascule de thème
-themeToggleBtn.addEventListener('click', function () {
-    document.body.classList.toggle('light-mode');
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', function () {
+        document.body.classList.toggle('light-mode');
 
-    if (document.body.classList.contains('light-mode')) {
-        themeToggleBtn.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-    } else {
-        themeToggleBtn.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-    }
-});
+        if (document.body.classList.contains('light-mode')) {
+            themeToggleBtn.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        } else {
+            themeToggleBtn.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+}
 
 // =========================================================
 // 5. ANIMATIONS AU DÉFILEMENT (INTERSECTION OBSERVER)
@@ -111,9 +115,11 @@ const observer = new IntersectionObserver((entries, observer) => {
     });
 }, observerOptions);
 
-const elementsToAnimate = document.querySelectorAll('.card, .section-heading, .demo-container, .hero-content');
+const elementsToAnimate = document.querySelectorAll('.card, .section-heading, .demo-container, .hero-content, .stat-card, .charts-section, .vote-card, tr.fade-in-element');
 
 elementsToAnimate.forEach(el => {
-    el.classList.add('fade-in-element');
+    if (!el.classList.contains('fade-in-element')) {
+        el.classList.add('fade-in-element');
+    }
     observer.observe(el);
 });
