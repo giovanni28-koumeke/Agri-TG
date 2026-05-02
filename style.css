@@ -628,10 +628,6 @@ body.light-mode .btn-secondary {
         padding: 1rem 1.5rem;
     }
 
-    .navbar .btn-primary {
-        display: none !important; /* Force hide the simuler button */
-    }
-
     .btn-theme {
         margin-right: 0;
         margin-left: auto;
