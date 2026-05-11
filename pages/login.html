@@ -7,69 +7,671 @@
     <meta name="description" content="Connexion - Agri TG">
     <title>Connexion - Agri TG</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="../assets/logoAgriTG.jpeg">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* ── Page centrée verticalement ── */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .auth-page .page-shell {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        /* ── Carte principale ── */
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Halo décoratif vert */
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── Logo ── */
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .auth-logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .auth-logo-text span {
+            color: #10B981;
+        }
+
+        /* ── En-tête ── */
+        .auth-head {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-head h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .auth-head p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ── Formulaire ── */
+        .form-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.55;
+        }
+
+        /* ── Indicateur de rôle ── */
+        .role-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .role-indicator.visible {
+            display: flex;
+        }
+
+        .role-indicator.membre {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3B82F6;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .role-indicator.tresorier {
+            background: rgba(245, 158, 11, 0.12);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .role-indicator.president {
+            background: rgba(16, 185, 129, 0.12);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        /* ── Message d'erreur ── */
+        .auth-error {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #EF4444;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .auth-error.visible {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-6px);
+            }
+
+            75% {
+                transform: translateX(6px);
+            }
+        }
+
+        /* ── Message de succès ── */
+        .auth-success {
+            display: none;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .auth-success.visible {
+            display: block;
+        }
+
+        /* ── Bouton submit ── */
+        .btn-login {
+            width: 100%;
+            padding: 0.9rem;
+            background: #10B981;
+            color: #070B09;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.2rem;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        /* ── Comptes de démo ── */
+        .demo-accounts {
+            margin-top: 1.6rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.4rem;
+        }
+
+        .demo-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .demo-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .demo-account-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .demo-account-btn:hover {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .demo-role-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .badge-membre {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3B82F6;
+        }
+
+        .badge-tresorier {
+            background: rgba(245, 158, 11, 0.15);
+            color: #F59E0B;
+        }
+
+        .badge-president {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+        }
+
+        .demo-account-info {
+            flex: 1;
+        }
+
+        .demo-account-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .demo-account-email {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .demo-arrow {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ── Footer ── */
+        .auth-footer-text {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer-text a {
+            color: #10B981;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* ── Spinner de chargement ── */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ── Simple footer ── */
+        .simple-footer {
+            padding: 1.2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .simple-footer p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
 </head>
 
 <body class="auth-page">
+
+    <!-- Navbar -->
     <header class="navbar">
         <a href="../index.html" class="logo">Agri <span>TG</span></a>
         <nav>
-            <a href="../index.html" class="nav-link">Retour à l'accueil</a>
+            <a href="../index.html" class="nav-link">← Retour à l'accueil</a>
         </nav>
     </header>
 
+    <!-- Contenu principal -->
     <main class="page-shell">
-        <section id="login-section" class="auth-card">
-            <div class="auth-head">
-                <h1>Connexion</h1>
-                <p class="subtitle">Accédez à votre dashboard Phase 2 et suivez vos finances.</p>
+        <section class="auth-card">
+
+            <!-- Logo -->
+            <div class="auth-logo">
+                <img src="../assets/logoAgriTG.jpeg" alt="Logo Agri TG">
+                <div class="auth-logo-text">Agri <span>TG</span></div>
             </div>
 
-            <form id="login-form" class="form-card">
+            <!-- En-tête -->
+            <div class="auth-head">
+                <h1>Connexion au Dashboard</h1>
+                <p>Accédez à votre espace coopérative sécurisé et suivez vos finances en temps réel.</p>
+            </div>
+
+            <!-- Formulaire -->
+            <form id="login-form" class="form-card" novalidate>
+
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="exemple@agritg.tg" required>
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" placeholder="exemple@agritg.tg" autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                    <input type="password" id="password" name="password" placeholder="••••••••"
+                        autocomplete="current-password">
                 </div>
 
-                <button type="submit" class="btn-primary">Se connecter</button>
+                <!-- Indicateur de rôle détecté -->
+                <div id="role-indicator" class="role-indicator">
+                    <span id="role-icon"></span>
+                    <span id="role-text"></span>
+                </div>
+
+                <!-- Message d'erreur -->
+                <div id="auth-error" class="auth-error">
+                    Email ou mot de passe incorrect.
+                </div>
+
+                <!-- Message de succès -->
+                <div id="auth-success" class="auth-success">
+                    ✓ Connexion réussie ! Redirection en cours…
+                </div>
+
+                <button type="submit" class="btn-login" id="btn-submit">
+                    Se connecter
+                </button>
             </form>
 
-            <p class="auth-footer-text">Pas encore de compte ? <a href="#">Demander un accès</a></p>
+            <!-- Comptes de démonstration -->
+            <div class="demo-accounts">
+                <p class="demo-title">Comptes de démonstration — cliquer pour remplir</p>
+                <div class="demo-grid">
+
+                    <button class="demo-account-btn" data-email="membre@agritg.tg" data-pwd="membre2026">
+                        <span class="demo-role-badge badge-membre">Membre</span>
+                        <div class="demo-account-info">
+                            <div class="demo-account-name">AMAVI Jojo</div>
+                            <div class="demo-account-email">membre@agritg.tg · membre2026</div>
+                        </div>
+                        <span class="demo-arrow">↗</span>
+                    </button>
+
+                    <button class="demo-account-btn" data-email="tresorier@agritg.tg" data-pwd="tresorier2026">
+                        <span class="demo-role-badge badge-tresorier">Trésorier</span>
+                        <div class="demo-account-info">
+                            <div class="demo-account-name">KOMI Hervé</div>
+                            <div class="demo-account-email">tresorier@agritg.tg · tresorier2026</div>
+                        </div>
+                        <span class="demo-arrow">↗</span>
+                    </button>
+
+                    <button class="demo-account-btn" data-email="president@agritg.tg" data-pwd="president2026">
+                        <span class="demo-role-badge badge-president">Président</span>
+                        <div class="demo-account-info">
+                            <div class="demo-account-name">KODJO Elie</div>
+                            <div class="demo-account-email">president@agritg.tg · president2026</div>
+                        </div>
+                        <span class="demo-arrow">↗</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <p class="auth-footer-text">
+                Pas encore de compte ? <a href="#">Demander un accès</a>
+            </p>
+
         </section>
     </main>
 
-    <footer class="site-footer simple-footer">
-        <p>© 2026 Agri TG. Tous droits réservés.</p>
+    <footer class="simple-footer">
+        <p>© 2026 Agri TG — Gouvernance Blockchain des Coopératives Agricoles du Togo</p>
     </footer>
 
     <script src="../script.js"></script>
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Empêche le rechargement de la page
-            
-            // Animation UX (Optionnelle)
-            const btn = this.querySelector('button[type="submit"]');
-            btn.textContent = "Connexion...";
-            btn.disabled = true;
-            
-            // Redirection vers le dashboard après 1 petite seconde
-            setTimeout(() => {
-                window.location.href = 'phase2.html';
-            }, 800);
+        // =========================================================
+        // AGRI TG — login.html
+        // Système d'authentification simulé avec 3 rôles
+        // Sauvegarde de session dans sessionStorage
+        // =========================================================
+
+        // ── Comptes autorisés ─────────────────────────────────────
+        const COMPTES = {
+            'membre@agritg.tg': {
+                password: 'membre2026',
+                nom: 'AMAVI Jojo',
+                role: 'membre',
+                initiales: 'AJ',
+                icon: '👤',
+                label: 'Membre de la coopérative'
+            },
+            'tresorier@agritg.tg': {
+                password: 'tresorier2026',
+                nom: 'KOMI Hervé',
+                role: 'tresorier',
+                initiales: 'KH',
+                icon: '💰',
+                label: 'Trésorier — peut enregistrer des transactions'
+            },
+            'president@agritg.tg': {
+                password: 'president2026',
+                nom: 'KODJO Elie',
+                role: 'president',
+                initiales: 'KE',
+                icon: '🏛️',
+                label: 'Président — accès complet'
+            }
+        };
+
+        const SESSION_KEY = 'agritg_session';
+
+        // ── Éléments du DOM ──────────────────────────────────────
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const pwdInput = document.getElementById('password');
+        const btnSubmit = document.getElementById('btn-submit');
+        const errorEl = document.getElementById('auth-error');
+        const successEl = document.getElementById('auth-success');
+        const roleIndicator = document.getElementById('role-indicator');
+        const roleIcon = document.getElementById('role-icon');
+        const roleText = document.getElementById('role-text');
+
+        // ── Si déjà connecté, rediriger directement ──────────────
+        (function checkAlreadyLoggedIn() {
+            try {
+                const s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
+                if (s && s.email && s.role) {
+                    window.location.replace('phase2.html');
+                }
+            } catch (e) { }
+        })();
+
+        // ── Détection du rôle en temps réel (au blur de l'email) ─
+        emailInput.addEventListener('blur', function () {
+            const compte = COMPTES[emailInput.value.trim().toLowerCase()];
+            if (compte) {
+                roleIndicator.className = 'role-indicator visible ' + compte.role;
+                roleIcon.textContent = compte.icon;
+                roleText.textContent = compte.label;
+            } else {
+                roleIndicator.className = 'role-indicator';
+            }
         });
+
+        // ── Remplissage automatique depuis les boutons de démo ───
+        document.querySelectorAll('.demo-account-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const email = btn.dataset.email;
+                const pwd = btn.dataset.pwd;
+
+                // Remplir les champs
+                emailInput.value = email;
+                pwdInput.value = pwd;
+
+                // Déclencher la détection du rôle manuellement
+                emailInput.dispatchEvent(new Event('blur'));
+
+                // Cacher les erreurs éventuelles
+                errorEl.classList.remove('visible');
+
+                // Focus sur le bouton submit
+                btnSubmit.focus();
+            });
+        });
+
+        // ── Soumission du formulaire ──────────────────────────────
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = emailInput.value.trim().toLowerCase();
+            const pwd = pwdInput.value;
+
+            // Cacher les messages précédents
+            errorEl.classList.remove('visible');
+            successEl.classList.remove('visible');
+
+            // Validation des champs vides
+            if (!email || !pwd) {
+                showError('Veuillez remplir tous les champs.');
+                return;
+            }
+
+            // Vérification des identifiants
+            const compte = COMPTES[email];
+
+            if (!compte || compte.password !== pwd) {
+                showError('Email ou mot de passe incorrect.');
+                // Secouer les champs
+                emailInput.style.borderColor = '#ef4444';
+                pwdInput.style.borderColor = '#ef4444';
+                setTimeout(function () {
+                    emailInput.style.borderColor = '';
+                    pwdInput.style.borderColor = '';
+                }, 1500);
+                return;
+            }
+
+            // ── Connexion réussie ─────────────────────────────────
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<span class="spinner"></span> Connexion…';
+
+            // Construire l'objet de session
+            const session = {
+                email: email,
+                nom: compte.nom,
+                role: compte.role,
+                initiales: compte.initiales,
+                icon: compte.icon,
+                loginAt: Date.now()
+            };
+
+            // Sauvegarder dans sessionStorage
+            try {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+            } catch (err) {
+                console.warn('sessionStorage indisponible :', err);
+            }
+
+            // Afficher le message de succès
+            successEl.textContent = '✓ Bonjour ' + compte.nom + ' ! Redirection…';
+            successEl.classList.add('visible');
+
+            // Rediriger vers le dashboard après 1s
+            setTimeout(function () {
+                window.location.href = 'phase2.html';
+            }, 1000);
+        });
+
+        // ── Afficher un message d'erreur ──────────────────────────
+        function showError(msg) {
+            errorEl.textContent = msg;
+            errorEl.classList.add('visible');
+            // Cacher après 4 secondes
+            setTimeout(function () {
+                errorEl.classList.remove('visible');
+            }, 4000);
+        }
     </script>
 </body>
 

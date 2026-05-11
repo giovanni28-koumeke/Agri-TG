@@ -10,10 +10,12 @@
     <link rel="icon" type="image/jpeg" href="../assets/logoAgriTG.jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- On n'utilise pas style.css ici pour éviter les conflits de thème sombre, tout est dans phase2.css -->
     <link rel="stylesheet" href="./phase2.css">
-    
+
     <!-- Configuration PWA (Progressive Web App) -->
     <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#22c55e">
@@ -23,6 +25,31 @@
 </head>
 
 <body class="app-body">
+
+    <!-- ===== PROTECTION SESSION — s'exécute avant l'affichage ===== -->
+    <script>
+        (function protectPage() {
+            var SESSION_KEY = 'agritg_session';
+            try {
+                var raw = sessionStorage.getItem(SESSION_KEY);
+                var s = raw ? JSON.parse(raw) : null;
+                // Pas de session ou session expirée (8h) → login
+                if (!s || !s.email || !s.role) {
+                    window.location.replace('login.html');
+                    return;
+                }
+                if (Date.now() - s.loginAt > 8 * 60 * 60 * 1000) {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    window.location.replace('login.html');
+                    return;
+                }
+            } catch (e) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
+
+
     <div class="app-container">
 
         <!-- ================= SIDEBAR (DESKTOP) ================= -->
@@ -61,20 +88,23 @@
                 <nav class="sidebar-nav">
                     <a href="#" class="nav-item outline" id="btn-new-tx">Nouvelle transaction</a>
                     <a href="#" class="nav-item outline">Nouvelle proposition</a>
-                    <a href="#" class="nav-item outline" style="background: var(--green-light); color: var(--green-dark); border-color: var(--green-primary);" id="btn-demo-mobile">📱 Démo App Mobile</a>
+                    <a href="#" class="nav-item outline"
+                        style="background: var(--green-light); color: var(--green-dark); border-color: var(--green-primary);"
+                        id="btn-demo-mobile">📱 Démo App Mobile</a>
                 </nav>
             </div>
 
             <div class="sidebar-image" style="padding: 0 15px; margin-bottom: 20px;">
-                <img src="../assets/dashboard.jpeg" alt="Blockchain" style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
+                <img src="../assets/dashboard.jpeg" alt="Blockchain"
+                    style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
             </div>
 
             <div class="sidebar-footer">
                 <a href="#" class="nav-item">
                     <span class="icon">⚙️</span> Paramètre
                 </a>
-                <a href="../index.html" class="nav-item text-red">
-                    <span class="icon">🚪</span> Déconnection
+                <a href="#" class="nav-item text-red" id="btn-logout">
+                    <span class="icon">🚪</span> Déconnexion
                 </a>
             </div>
         </aside>
@@ -90,29 +120,29 @@
                 <div class="header-actions">
                     <button class="icon-btn">🔔<span class="notification-dot"></span></button>
                     <div class="user-profile">
-                        <div class="avatar-circle">KE</div>
-                        <span class="user-name">KODJO Elie</span>
+                        <div class="avatar-circle" id="header-initiales">KE</div>
+                        <span class="user-name" id="header-nom">KODJO Elie</span>
                     </div>
                 </div>
             </header>
 
             <!-- CONTENT GRID -->
             <div class="app-content">
-                
+
                 <!-- TOP STATS -->
                 <div class="stats-row">
                     <div class="stat-box">
                         <div class="stat-icon">👥</div>
                         <div class="stat-info">
-                            <h4>Membre actif</h4>
+                            <h4>Membres actifs</h4>
                             <strong>24</strong>
-                            <span class="stat-sub text-green">+3 nouveau</span>
+                            <span class="stat-sub text-green">+3 nouveaux</span>
                         </div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-icon">💸</div>
                         <div class="stat-info">
-                            <h4>Transaction</h4>
+                            <h4>Transactions</h4>
                             <strong>167</strong>
                             <span class="stat-sub">+12 cette semaine</span>
                         </div>
@@ -120,15 +150,15 @@
                     <div class="stat-box border-green">
                         <div class="stat-icon text-green">✅</div>
                         <div class="stat-info">
-                            <h4>Certifier</h4>
+                            <h4>Certifiés</h4>
                             <strong>185</strong>
-                            <span class="stat-sub">95.9% validé</span>
+                            <span class="stat-sub">95.9% validés</span>
                         </div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-icon">🗳️</div>
                         <div class="stat-info">
-                            <h4>Vote Actif</h4>
+                            <h4>Votes Actifs</h4>
                             <strong>20</strong>
                             <span class="stat-sub">Participation de 87%</span>
                         </div>
@@ -140,25 +170,28 @@
                     <!-- Balance Chart -->
                     <div class="balance-card panel">
                         <div class="balance-info">
-                            <h3>solde coopérative</h3>
+                            <h3>Solde coopérative</h3>
                             <h2>2,450,000 CFA</h2>
                             <p>solde disponible</p>
-                            <button class="btn-primary mt-auto">voir le rapport financier</button>
+                            <button class="btn-primary mt-auto">Voir le rapport financier</button>
                         </div>
                         <div class="balance-chart-area">
                             <div class="chart-header">
                                 <span>Évolution du solde</span>
-                                <select><option>Année en cours</option></select>
+                                <select>
+                                    <option>Année en cours</option>
+                                </select>
                             </div>
                             <div class="fake-line-chart">
                                 <!-- Ligne SVG simulée -->
                                 <svg viewBox="0 0 400 150" class="chart-svg">
-                                    <polyline fill="none" stroke="#22c55e" stroke-width="3" points="0,140 50,110 100,120 150,90 200,70 250,50 300,30 350,20 400,10"/>
-                                    <circle cx="0" cy="140" r="4" fill="#22c55e"/>
-                                    <circle cx="50" cy="110" r="4" fill="#22c55e"/>
-                                    <circle cx="100" cy="120" r="4" fill="#eab308"/> <!-- point orange/jaune -->
-                                    <circle cx="150" cy="90" r="4" fill="#22c55e"/>
-                                    <circle cx="400" cy="10" r="4" fill="#22c55e"/>
+                                    <polyline fill="none" stroke="#22c55e" stroke-width="3"
+                                        points="0,140 50,110 100,120 150,90 200,70 250,50 300,30 350,20 400,10" />
+                                    <circle cx="0" cy="140" r="4" fill="#22c55e" />
+                                    <circle cx="50" cy="110" r="4" fill="#22c55e" />
+                                    <circle cx="100" cy="120" r="4" fill="#eab308" /> <!-- point orange/jaune -->
+                                    <circle cx="150" cy="90" r="4" fill="#22c55e" />
+                                    <circle cx="400" cy="10" r="4" fill="#22c55e" />
                                 </svg>
                                 <!-- Grille de fond -->
                                 <div class="chart-grid">
@@ -193,40 +226,50 @@
                     <!-- Transactions List -->
                     <div class="transactions-card panel">
                         <div class="panel-header">
-                            <h3>Historique des transaction</h3>
+                            <h3>Historique des transactions</h3>
                             <div class="filter-tabs">
                                 <button class="active">Tout</button>
-                                <button>Entrer</button>
-                                <button>Sortie</button>
+                                <button>Entrées</button>
+                                <button>Sorties</button>
                             </div>
                         </div>
                         <div class="transaction-list">
                             <div class="tx-item">
-                                <div class="tx-user"><div class="avatar-sm img-1"></div> AMAVI Jojo</div>
+                                <div class="tx-user">
+                                    <div class="avatar-sm img-1"></div> AMAVI Jojo
+                                </div>
                                 <div class="tx-desc">Cotisation mensuel</div>
                                 <div class="tx-amount text-green">+500.000 CFA</div>
                                 <div class="tx-time">il y a 3 jours</div>
                             </div>
                             <div class="tx-item">
-                                <div class="tx-user"><div class="avatar-sm img-2"></div> KOMI Hervé</div>
+                                <div class="tx-user">
+                                    <div class="avatar-sm img-2"></div> KOMI Hervé
+                                </div>
                                 <div class="tx-desc">Achat d'engrais</div>
                                 <div class="tx-amount text-red">-70.000 CFA</div>
                                 <div class="tx-time">il y a 5 jours</div>
                             </div>
                             <div class="tx-item">
-                                <div class="tx-user"><div class="avatar-sm img-3"></div> KOMA Ablavi</div>
+                                <div class="tx-user">
+                                    <div class="avatar-sm img-3"></div> KOMA Ablavi
+                                </div>
                                 <div class="tx-desc">Prime de vente</div>
                                 <div class="tx-amount text-green">+250.000 CFA</div>
                                 <div class="tx-time">il y a 2 jours</div>
                             </div>
                             <div class="tx-item">
-                                <div class="tx-user"><div class="avatar-sm img-4"></div> KASSA Junior</div>
+                                <div class="tx-user">
+                                    <div class="avatar-sm img-4"></div> KASSA Junior
+                                </div>
                                 <div class="tx-desc">Cotisation mensuel</div>
                                 <div class="tx-amount text-green">+300.000 CFA</div>
                                 <div class="tx-time">il y a 7 jours</div>
                             </div>
                             <div class="tx-item">
-                                <div class="tx-user"><div class="avatar-sm img-5"></div> SASSOU Komi</div>
+                                <div class="tx-user">
+                                    <div class="avatar-sm img-5"></div> SASSOU Komi
+                                </div>
                                 <div class="tx-desc">Cotisation mensuel</div>
                                 <div class="tx-amount text-green">+100.000 CFA</div>
                                 <div class="tx-time">il y a 2 jours</div>
@@ -240,14 +283,16 @@
                         <div class="vote-inner-card">
                             <div class="vote-content">
                                 <h4>Proposition de dépense</h4>
-                                <p>Acceptez-vous le projet d'achat d'un nouveau tracteur pour 600.000 CFA pour la coopérative ?</p>
+                                <p>Acceptez-vous le projet d'achat d'un nouveau tracteur pour 600.000 CFA pour la
+                                    coopérative ?</p>
                                 <div class="vote-meta">
-                                    <span>👥 22 Membres connecter</span>
+                                    <span>👥 22 Membres connectés</span>
                                 </div>
                             </div>
                             <div class="vote-image">
                                 <!-- Image placeholder tracteur -->
-                                <img src="../assets/dashboard.jpeg" alt="Tracteur" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                                <img src="../assets/dashboard.jpeg" alt="Tracteur"
+                                    style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
                             </div>
                         </div>
                         <div class="vote-progress-section">
@@ -305,4 +350,5 @@
     <!-- Script de la phase 2 -->
     <script src="./phase2.js"></script>
 </body>
+
 </html>
