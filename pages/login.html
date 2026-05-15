@@ -543,9 +543,39 @@
             (async function checkAlreadyLoggedIn() {
                 if (!supabase) return;
                 try {
+                    // Si on a déjà la session dans sessionStorage, on redirige
+                    if (sessionStorage.getItem(SESSION_KEY)) {
+                        window.location.replace('phase2.html');
+                        return;
+                    }
+
                     const { data: { session } } = await supabase.auth.getSession();
                     if (session) {
-                        window.location.replace('phase2.html');
+                        // Supabase a une session mais sessionStorage est vide (ex: nouvel onglet)
+                        // On doit reconstruire la session avant de rediriger
+                        const { data: membre, error } = await supabase
+                            .from('membres')
+                            .select('id, nom, prenom, role, cooperative_id')
+                            .eq('id', session.user.id)
+                            .single();
+
+                        if (membre && !error) {
+                            const userSession = {
+                                id: membre.id,
+                                email: session.user.email,
+                                cooperative_id: membre.cooperative_id,
+                                nom: membre.prenom + ' ' + membre.nom,
+                                initiales: (membre.prenom[0] + membre.nom[0]).toUpperCase(),
+                                role: membre.role,
+                                loginAt: Date.now()
+                            };
+                            sessionStorage.setItem(SESSION_KEY, JSON.stringify(userSession));
+                            window.location.replace('phase2.html');
+                        } else {
+                            // Le compte Supabase existe mais pas dans la table membres
+                            // On déconnecte pour éviter le bug
+                            await supabase.auth.signOut();
+                        }
                     }
                 } catch (e) {
                     console.warn('[Login] Impossible de vérifier la session :', e.message);
