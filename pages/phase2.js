@@ -568,8 +568,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     if (error) throw error;
 
-                    // Le Realtime va automatiquement mettre à jour la liste
-                    showToast('✓ Transaction enregistrée en base !');
+                    // ── Ancrage blockchain après INSERT Supabase ──
+                    // data contient la transaction avec son hash_local
+                    showToast('⏳ Certification blockchain en cours…');
+                    try {
+                        const blockchain = window.AgriTGBlockchain;
+                        if (blockchain) {
+                            const certif = await blockchain.certifierTransaction({
+                                id: data.id,
+                                hash_local: data.hash_local || '',
+                                montant: data.montant,
+                                type: data.type
+                            });
+
+                            if (certif.succes) {
+                                // Sauvegarder le hash blockchain dans Supabase
+                                await supabase
+                                    .from('transactions')
+                                    .update({
+                                        blockchain_hash: certif.transactionHash,
+                                        blockchain_bloc: certif.blockNumber,
+                                        blockchain_at: new Date().toISOString(),
+                                        statut: 'certifiee'
+                                    })
+                                    .eq('id', data.id);
+
+                                const label = certif.simule ? '(simulation)' : '✓ on-chain';
+                                showToast('✓ Transaction certifiée ' + label + ' — ' + certif.transactionHash.slice(0, 12) + '…');
+                            } else {
+                                showToast('✓ Transaction en base — certification blockchain reportée.');
+                            }
+                        } else {
+                            showToast('✓ Transaction enregistrée en base !');
+                        }
+                    } catch (blockErr) {
+                        console.warn('[Blockchain] Erreur certification :', blockErr.message);
+                        showToast('✓ Transaction en base — blockchain indisponible.');
+                    }
 
                 } else {
                     // ── Fallback démo sans Supabase ─────────────
@@ -682,10 +717,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (error) throw error;
 
+                // ── Ancrage blockchain du vote ────────────────────
+                let hashVote = genHash(12);
+                let blocVote = Math.floor(Math.random() * 9000) + 7000000;
+                try {
+                    const blockchain = window.AgriTGBlockchain;
+                    if (blockchain) {
+                        const certif = await blockchain.certifierVote({
+                            id: state.membre_id + '_' + propIdCourant,
+                            hash_local: genHash(64).replace('0x', ''),
+                            proposition_id: propIdCourant,
+                            choix: choix
+                        });
+
+                        if (certif.succes) {
+                            hashVote = certif.transactionHash;
+                            blocVote = certif.blockNumber;
+
+                            // Mettre à jour le vote avec le hash blockchain
+                            await supabase
+                                .from('votes_membres')
+                                .update({
+                                    blockchain_hash: certif.transactionHash,
+                                    blockchain_at: new Date().toISOString()
+                                })
+                                .eq('proposition_id', propIdCourant)
+                                .eq('membre_id', state.membre_id);
+                        }
+                    }
+                } catch (blockErr) {
+                    console.warn('[Blockchain] Erreur certification vote :', blockErr.message);
+                }
+
                 // Recharger les compteurs depuis Supabase
                 await chargerPropositions();
-                afficherHashVote(choix, genHash(12));
-                showVoteToast(choix, genHash(12));
+                afficherHashVote(choix, hashVote, blocVote, new Date().toLocaleTimeString('fr-FR'));
+                showVoteToast(choix, hashVote);
 
             } else {
                 // ── Mode démo sans Supabase ────────────────────

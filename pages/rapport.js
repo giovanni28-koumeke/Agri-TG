@@ -237,7 +237,52 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (error) throw error;
 
-                showToast('✓ Rapport mensuel généré avec succès !');
+                showToast('✓ Rapport mensuel généré dans Supabase !');
+                
+                // ── Ancrage blockchain après génération Supabase ──
+                showToast('⏳ Certification blockchain en cours…');
+                try {
+                    // On récupère le rapport fraîchement créé pour avoir son hash_contenu
+                    const { data: rapData, error: rapErr } = await supabase
+                        .from('rapports')
+                        .select('*')
+                        .eq('id', data)
+                        .single();
+
+                    if (rapErr) throw rapErr;
+
+                    const blockchain = window.AgriTGBlockchain;
+                    if (blockchain) {
+                        const certif = await blockchain.ancrerRapport({
+                            id: rapData.id,
+                            hash_contenu: rapData.hash_contenu || '',
+                            annee: rapData.annee,
+                            mois: rapData.mois
+                        });
+
+                        if (certif.succes) {
+                            // Sauvegarder le hash blockchain dans Supabase
+                            await supabase
+                                .from('rapports')
+                                .update({
+                                    blockchain_hash: certif.transactionHash,
+                                    blockchain_at: new Date().toISOString()
+                                })
+                                .eq('id', rapData.id);
+
+                            const label = certif.simule ? '(simulation)' : '✓ on-chain';
+                            showToast('✓ Rapport certifié ' + label + ' — ' + certif.transactionHash.slice(0, 12) + '…');
+                        } else {
+                            showToast('✓ Rapport en base — certification blockchain reportée.');
+                        }
+                    } else {
+                        showToast('✓ Rapport enregistré en base !');
+                    }
+                } catch (blockErr) {
+                    console.warn('[Blockchain] Erreur certification rapport :', blockErr.message);
+                    showToast('✓ Rapport en base — blockchain indisponible.');
+                }
+
                 await chargerRapports(); // Recharger la liste
 
             } catch (err) {
