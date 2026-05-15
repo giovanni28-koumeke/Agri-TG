@@ -12,7 +12,7 @@
 //
 // POUR FORCER UNE MISE À JOUR → changer CACHE_VERSION
 
-const CACHE_VERSION = 'agritg-v2.0';
+const CACHE_VERSION = 'agritg-v2.1';
 const CACHE_STATIC  = CACHE_VERSION + '-static';
 const CACHE_DYNAMIC = CACHE_VERSION + '-dynamic';
 
@@ -35,6 +35,7 @@ const FICHIERS_STATIQUES = [
     // JavaScript
     './script.js',
     './pages/phase2.js',
+    './pages/supabaseClient.js',
 
     // Manifest PWA
     './manifest.json',
