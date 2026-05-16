@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let session = null;
     try {
-        const raw = sessionStorage.getItem(SESSION_KEY);
+        const raw = localStorage.getItem(SESSION_KEY);
         if (raw) session = JSON.parse(raw);
     } catch (e) { }
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             if (confirm('Voulez-vous vous déconnecter ?')) {
                 await supabase.auth.signOut();
-                sessionStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(SESSION_KEY);
                 window.location.href = 'login.html';
             }
         });
@@ -273,8 +273,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Mettre à jour la première proposition affichée
             if (state.propositions.length > 0) {
                 const p = state.propositions[0];
-                votesOui = p.total_oui || 15;
-                votesNon = p.total_non || 5;
+                votesOui = p.total_oui || 0;
+                votesNon = p.total_non || 0;
                 propIdCourant = p.id;
                 updateVoteUI();
 
@@ -486,11 +486,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             .on('postgres_changes', {
                 event: '*',
                 schema: 'public',
-                table: 'votes_membres',
-                filter: 'cooperative_id=eq.' + state.cooperative_id
+                table: 'votes_membres'
+                // Filtre retiré au cas où cooperative_id n'est pas sur la table
             }, async () => {
                 await chargerPropositions();
-                showToast('✓ Un vote vient d\'être enregistré !');
+            })
+            .subscribe();
+
+        // ── Mise à jour d'une proposition (trigger après vote) ────
+        supabase
+            .channel('propositions-live')
+            .on('postgres_changes', {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'propositions'
+            }, async () => {
+                await chargerPropositions();
+                showToast('🔄 Les votes ont été mis à jour en temps réel !');
             })
             .subscribe();
     }
@@ -742,7 +754,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     .insert({
                         proposition_id: propIdCourant,
                         membre_id: state.membre_id,
-                        cooperative_id: state.cooperative_id,
                         choix: choix
                         // Le trigger SQL recalcule total_oui/total_non automatiquement
                     });

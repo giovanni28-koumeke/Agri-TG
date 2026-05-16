@@ -40,7 +40,7 @@
         (function protectPage() {
             var SESSION_KEY = 'agritg_session';
             try {
-                var raw = sessionStorage.getItem(SESSION_KEY);
+                var raw = localStorage.getItem(SESSION_KEY);
                 var s = raw ? JSON.parse(raw) : null;
                 // Pas de session ou session expirée (8h) → login
                 if (!s || !s.email || !s.role) {

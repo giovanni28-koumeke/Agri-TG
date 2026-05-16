@@ -543,15 +543,15 @@
             (async function checkAlreadyLoggedIn() {
                 if (!supabase) return;
                 try {
-                    // Si on a déjà la session dans sessionStorage, on redirige
-                    if (sessionStorage.getItem(SESSION_KEY)) {
+                    // Si on a déjà la session dans localStorage, on redirige
+                    if (localStorage.getItem(SESSION_KEY)) {
                         window.location.replace('phase2.html');
                         return;
                     }
 
                     const { data: { session } } = await supabase.auth.getSession();
                     if (session) {
-                        // Supabase a une session mais sessionStorage est vide (ex: nouvel onglet)
+                        // Supabase a une session mais localStorage est vide (ex: nouvel onglet)
                         // On doit reconstruire la session avant de rediriger
                         const { data: membre, error } = await supabase
                             .from('membres')
@@ -569,7 +569,7 @@
                                 role: membre.role,
                                 loginAt: Date.now()
                             };
-                            sessionStorage.setItem(SESSION_KEY, JSON.stringify(userSession));
+                            localStorage.setItem(SESSION_KEY, JSON.stringify(userSession));
                             window.location.replace('phase2.html');
                         } else {
                             // Le compte Supabase existe mais pas dans la table membres
@@ -673,7 +673,7 @@
                             role: membre.role,
                             loginAt: Date.now()
                         };
-                        sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+                        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
                         // 4. Succès → redirection
                         successEl.textContent = '✓ Bonjour ' + membre.prenom + ' ! Redirection…';
@@ -722,7 +722,7 @@
                     role: compte.role,
                     loginAt: Date.now()
                 };
-                sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+                localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
                 successEl.textContent = '✓ Mode démo — Bonjour ' + compte.prenom + ' !';
                 successEl.classList.add('visible');
