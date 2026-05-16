@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     id: tx.id,
                     type: tx.type,
                     montant: tx.direction === '+' ? tx.montant : -tx.montant,
-                    membre: 'Nouveau membre',
+                    membre: tx.description || 'Nouveau membre',
                     hash: tx.blockchain_hash || null,
                     date: new Date(tx.date_transaction).toLocaleDateString('fr-FR', {
                         day: '2-digit', month: 'short', year: 'numeric'
@@ -527,25 +527,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     // =====================================================
 
     const btnNewTx = document.getElementById('btn-new-tx');
+    const txModal = document.getElementById('tx-modal');
+    const closeTxModal = document.getElementById('close-tx-modal');
+    const txForm = document.getElementById('tx-form');
 
-    if (btnNewTx) {
-        btnNewTx.addEventListener('click', async function (e) {
+    if (btnNewTx && txModal) {
+        // Ouvrir la modale
+        btnNewTx.addEventListener('click', function (e) {
             e.preventDefault();
-
             if (session && session.role === 'membre') {
                 showPermissionAlert('⛔ Seul le trésorier peut enregistrer des transactions.');
                 return;
             }
+            txModal.style.display = 'flex';
+        });
 
-            // Données de démo aléatoires
-            const membres = ['AGBO Kofi', 'DOVI Mawuli', 'GBAFA Akosua', 'LAWSON Edem'];
-            const types = ['cotisation', 'prime'];
-            const type = types[Math.floor(Math.random() * types.length)];
-            const montant = (Math.floor(Math.random() * 40) + 1) * 10000;
-            const membreNom = membres[Math.floor(Math.random() * membres.length)];
+        // Fermer la modale
+        closeTxModal.addEventListener('click', () => { txModal.style.display = 'none'; });
+        txModal.addEventListener('click', (e) => { if (e.target === txModal) txModal.style.display = 'none'; });
 
-            btnNewTx.textContent = '⏳ Enregistrement…';
-            btnNewTx.disabled = true;
+        // Soumettre le formulaire
+        txForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const typeEl = document.getElementById('tx-type');
+            const montantEl = document.getElementById('tx-montant');
+            const descEl = document.getElementById('tx-desc');
+            const btnSubmit = document.getElementById('btn-submit-tx');
+
+            const type = typeEl.value;
+            const montant = parseInt(montantEl.value);
+            const desc = descEl.value.trim();
+
+            if (!montant || !desc) {
+                showToast('⚠ Veuillez remplir tous les champs.');
+                return;
+            }
+
+            const isDepense = ['depense', 'achat_groupe'].includes(type);
+            const direction = isDepense ? '-' : '+';
+
+            btnSubmit.textContent = '⏳ Enregistrement…';
+            btnSubmit.disabled = true;
 
             try {
                 if (state.cooperative_id) {
@@ -554,12 +577,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .from('transactions')
                         .insert({
                             cooperative_id: state.cooperative_id,
-                            membre_id: state.membre_id || null,
+                            membre_id: state.membre_id || null, // Facultatif
                             enregistre_par: state.membre_id || null,
                             type: type,
                             montant: montant,
-                            direction: '+',
-                            description: 'Transaction enregistrée via dashboard — ' + membreNom,
+                            direction: direction,
+                            description: desc,
                             statut: 'en_attente',
                             date_transaction: new Date().toISOString().split('T')[0]
                         })
@@ -568,8 +591,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     if (error) throw error;
 
+                    txModal.style.display = 'none'; // Fermer la modale
+                    txForm.reset();
+                    
+                    // Recharger manuellement pour afficher tout de suite sans attendre le realtime
+                    await chargerTransactions();
+                    await chargerDashboard();
+
                     // ── Ancrage blockchain après INSERT Supabase ──
-                    // data contient la transaction avec son hash_local
                     showToast('⏳ Certification blockchain en cours…');
                     try {
                         const blockchain = window.AgriTGBlockchain;
@@ -613,8 +642,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     for (let i = 0; i < 16; i++) hash += chars[Math.floor(Math.random() * chars.length)];
                     const now = Date.now();
                     const nouvelleTx = {
-                        id: 'tx_' + now, type, montant,
-                        membre: membreNom.toUpperCase(),
+                        id: 'tx_' + now, type, montant: isDepense ? -montant : montant,
+                        membre: desc,
                         hash, certifie: false,
                         date: new Date(now).toLocaleDateString('fr-FR', {
                             day: '2-digit', month: 'short', year: 'numeric'
@@ -624,6 +653,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (list) list.insertAdjacentHTML('afterbegin', buildTxRow(nouvelleTx, true));
                     const metrics = calcMetrics([nouvelleTx, ...DEMO_TRANSACTIONS_FALLBACK]);
                     updateSoldeDisplay(metrics.solde + 1248000);
+                    
+                    txModal.style.display = 'none';
+                    txForm.reset();
                     showToast('✓ Transaction ajoutée (mode démo) !');
                 }
 
@@ -631,8 +663,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('[Supabase] Erreur INSERT transaction :', err.message);
                 showToast('⚠ Erreur : ' + err.message);
             } finally {
-                btnNewTx.textContent = '+ Nouvelle transaction';
-                btnNewTx.disabled = false;
+                btnSubmit.textContent = 'Enregistrer la transaction';
+                btnSubmit.disabled = false;
             }
         });
     }
