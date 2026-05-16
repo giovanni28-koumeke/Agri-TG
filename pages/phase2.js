@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let session = null;
     try {
-        const raw = localStorage.getItem(SESSION_KEY);
+        const raw = sessionStorage.getItem(SESSION_KEY);
         if (raw) session = JSON.parse(raw);
     } catch (e) { }
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             if (confirm('Voulez-vous vous déconnecter ?')) {
                 await supabase.auth.signOut();
-                localStorage.removeItem(SESSION_KEY);
+                sessionStorage.removeItem(SESSION_KEY);
                 window.location.href = 'login.html';
             }
         });
@@ -605,7 +605,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     txModal.style.display = 'none'; // Fermer la modale
                     txForm.reset();
-                    
+
                     // Recharger manuellement pour afficher tout de suite sans attendre le realtime
                     await chargerTransactions();
                     await chargerDashboard();
@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (list) list.insertAdjacentHTML('afterbegin', buildTxRow(nouvelleTx, true));
                     const metrics = calcMetrics([nouvelleTx, ...DEMO_TRANSACTIONS_FALLBACK]);
                     updateSoldeDisplay(metrics.solde + 1248000);
-                    
+
                     txModal.style.display = 'none';
                     txForm.reset();
                     showToast('✓ Transaction ajoutée (mode démo) !');

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Charger la session
     let session = null;
     try {
-        const raw = localStorage.getItem(SESSION_KEY);
+        const raw = sessionStorage.getItem(SESSION_KEY);
         if (raw) session = JSON.parse(raw);
     } catch (e) { }
 
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             if (confirm('Voulez-vous vous déconnecter ?')) {
                 await supabase.auth.signOut();
-                localStorage.removeItem(SESSION_KEY);
+                sessionStorage.removeItem(SESSION_KEY);
                 window.location.href = 'login.html';
             }
         });
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!state.cooperative_id) return;
 
         const container = document.getElementById('rapports-container');
-        
+
         try {
             const { data, error } = await supabase
                 .from('rapports')
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .order('mois', { ascending: false });
 
             if (error) throw error;
-            
+
             state.rapports = data || [];
             afficherRapports(state.rapports);
 
@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         rapports.forEach(rap => {
             const certifie = rap.blockchain_hash ? true : false;
-            const badgeCertif = certifie 
+            const badgeCertif = certifie
                 ? `<span class="rapport-status certifie">✓ Certifié On-chain</span>`
                 : `<span class="rapport-status">En attente de certification</span>`;
-            
+
             const card = document.createElement('div');
             card.className = 'rapport-card';
             card.innerHTML = `
@@ -152,16 +152,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (btnCloseModal) {
         btnCloseModal.addEventListener('click', () => { modal.style.display = 'none'; });
-        modal.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
     }
 
     function ouvrirModal(rap) {
         document.getElementById('modal-report-title').textContent = `Rapport Mensuel`;
         document.getElementById('modal-report-date').textContent = `${nomMois(rap.mois)} ${rap.annee} — Période: ${rap.periode}`;
-        
+
         document.getElementById('modal-entrees').textContent = `+${Number(rap.total_entrees).toLocaleString('fr-FR')} CFA`;
         document.getElementById('modal-sorties').textContent = `-${Number(rap.total_sorties).toLocaleString('fr-FR')} CFA`;
-        
+
         const soldeEl = document.getElementById('modal-solde');
         soldeEl.textContent = `${Number(rap.solde_net).toLocaleString('fr-FR')} CFA`;
         soldeEl.style.color = rap.solde_net >= 0 ? 'var(--green-primary)' : 'var(--text-red)';
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let mt = Number(montant);
                 let colorClass = ['depense', 'achat_groupe'].includes(type) ? 'text-red' : 'text-green';
                 let sign = ['depense', 'achat_groupe'].includes(type) ? '-' : '+';
-                
+
                 catContainer.innerHTML += `
                     <div class="stat-line">
                         <span class="stat-label" style="text-transform: capitalize;">${nom}</span>
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Blockchain status
         const statusEl = document.getElementById('modal-report-status');
         const hashBox = document.getElementById('modal-hash-box');
-        
+
         if (rap.blockchain_hash) {
             statusEl.innerHTML = `<span class="rapport-status certifie" style="font-size:0.9rem;">✓ Certifié sur la Blockchain</span>`;
             hashBox.style.display = 'block';
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (error) throw error;
 
                 showToast('✓ Rapport mensuel généré dans Supabase !');
-                
+
                 // ── Ancrage blockchain après génération Supabase ──
                 showToast('⏳ Certification blockchain en cours…');
                 try {

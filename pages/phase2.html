@@ -40,7 +40,7 @@
         (function protectPage() {
             var SESSION_KEY = 'agritg_session';
             try {
-                var raw = localStorage.getItem(SESSION_KEY);
+                var raw = sessionStorage.getItem(SESSION_KEY);
                 var s = raw ? JSON.parse(raw) : null;
                 // Pas de session ou session expirée (8h) → login
                 if (!s || !s.email || !s.role) {
@@ -360,18 +360,24 @@
 
     <!-- Modale Nouvelle Transaction -->
     <div id="tx-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content" style="max-width: 450px; background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color);">
+        <div class="modal-content"
+            style="max-width: 450px; background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem;">Nouvelle Transaction</h2>
-                <button id="close-tx-modal" style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">✖</button>
+                <button id="close-tx-modal"
+                    style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">✖</button>
             </div>
-            
+
             <form id="tx-form">
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Type de transaction</label>
-                    <select id="tx-type" style="font-family: 'Inter', sans-serif; font-size: 1rem; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: border-color 0.2s;">
+                    <label
+                        style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Type
+                        de transaction</label>
+                    <select id="tx-type"
+                        style="font-family: 'Inter', sans-serif; font-size: 1rem; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: border-color 0.2s;">
                         <option value="cotisation" style="background: #1c1f1d; color: #fff;">Cotisation (+)</option>
-                        <option value="vente_recolte" style="background: #1c1f1d; color: #fff;">Vente de récolte (+)</option>
+                        <option value="vente_recolte" style="background: #1c1f1d; color: #fff;">Vente de récolte (+)
+                        </option>
                         <option value="subvention" style="background: #1c1f1d; color: #fff;">Subvention (+)</option>
                         <option value="prime" style="background: #1c1f1d; color: #fff;">Prime (+)</option>
                         <option value="depense" style="background: #1c1f1d; color: #fff;">Dépense (-)</option>
@@ -380,18 +386,23 @@
                 </div>
 
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Montant (CFA)</label>
+                    <label
+                        style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Montant
+                        (CFA)</label>
                     <input type="number" id="tx-montant" placeholder="ex: 5000" required min="1"
                         style="font-family: 'Inter', sans-serif; font-size: 1rem; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: border-color 0.2s;">
                 </div>
 
                 <div style="margin-bottom: 25px;">
-                    <label style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Description / Membre concerné</label>
+                    <label
+                        style="display: block; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500;">Description
+                        / Membre concerné</label>
                     <input type="text" id="tx-desc" placeholder="ex: Cotisation pour Kofi Amegbor" required
                         style="font-family: 'Inter', sans-serif; font-size: 1rem; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: border-color 0.2s;">
                 </div>
 
-                <button type="submit" id="btn-submit-tx" class="btn-primary" style="width: 100%; justify-content: center;">Enregistrer la transaction</button>
+                <button type="submit" id="btn-submit-tx" class="btn-primary"
+                    style="width: 100%; justify-content: center;">Enregistrer la transaction</button>
             </form>
         </div>
     </div>
