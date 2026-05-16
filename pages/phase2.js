@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let session = null;
     try {
-        const raw = sessionStorage.getItem(SESSION_KEY);
+        const raw = localStorage.getItem(SESSION_KEY);
         if (raw) session = JSON.parse(raw);
     } catch (e) { }
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             if (confirm('Voulez-vous vous déconnecter ?')) {
                 await supabase.auth.signOut();
-                sessionStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(SESSION_KEY);
                 window.location.href = 'login.html';
             }
         });
